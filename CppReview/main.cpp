@@ -8,7 +8,7 @@ int main()
 {
 
 	SampleProgram sample;
-	sample.testCompositionRelationship();
+	sample.testAggregationRelationship();
 
 	system("pause");
 	return 0;

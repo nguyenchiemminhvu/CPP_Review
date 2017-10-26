@@ -2,6 +2,8 @@
 #include <assert.h>
 #include <iostream>
 #include <string>
+#include <map>
+
 #include <cstring>
 
 using namespace std;
@@ -281,7 +283,170 @@ void SampleProgram::testAggregationRelationship()
 	// - The part (member) does not know about the existence of the object (class)
 	//////////////////////////////////////////////////////////////////////////
 
+	class Person
+	{
+	public:
 
+		Person(int peronalID, const std::string &name) :
+			peronalID(peronalID), 
+			name(name)
+		{
+
+		}
+
+		int getPersonalID()
+		{
+			return peronalID;
+		}
+
+		std::string getName()
+		{
+			return name;
+		}
+
+	private:
+
+		int				peronalID;
+		std::string		name;
+
+	};
+
+	class University
+	{
+	public:
+
+		University(const std::string &name)	:
+			name(name)
+		{
+
+		}
+
+		void hire(Person *person)
+		{
+			assert(person != NULL);
+
+			std::cout << name << " hire " << person->getName() << std::endl;
+			numberOfTeacher++;
+			listTeacher.insert(std::pair<int, Person*>(numberOfTeacher, person));
+		}
+
+		void cancelContract(int personalID)
+		{
+			for (std::map<int, Person*>::iterator iter = listTeacher.begin(); iter != listTeacher.end(); iter++)
+			{
+				if (((Person *)(*iter).second)->getPersonalID() == personalID)
+				{
+					std::cout << name << " cancel contract to " << ((Person*)(*iter).second)->getName() << std::endl;
+					listTeacher.erase(iter);
+					return;
+				}
+			}
+		}
+
+		void showTeachersInfo()
+		{
+			std::cout << std::endl;
+			std::cout << "=================================================" << std::endl;
+			std::cout << " " << name << " " << std::endl;
+			for (std::map<int, Person *>::iterator iter = listTeacher.begin(); iter != listTeacher.end(); iter++)
+			{
+				std::cout << ((Person*)(*iter).second)->getPersonalID() << " " << ((Person*)(*iter).second)->getName() << std::endl;
+			}
+			std::cout << "=================================================" << std::endl;
+			std::cout << std::endl;
+		}
+
+	private:
+
+		std::string					name;
+
+		int							numberOfTeacher;
+		std::map<int, Person*>		listTeacher;
+
+	};
+
+	class Company
+	{
+	public:
+
+		Company(const std::string &name)	:
+			name(name)
+		{
+
+		}
+
+		void hire(Person *person)
+		{
+			assert(person != NULL);
+
+			std::cout << name << " hire " << person->getName() << std::endl;
+			numberOfEmployee++;
+			listEmployee.insert(std::pair<int, Person*>(numberOfEmployee, person));
+		}
+
+		void cancelContract(int personalID)
+		{
+			for (std::map<int, Person*>::iterator iter = listEmployee.begin(); iter != listEmployee.end(); iter++)
+			{
+				if (((Person *)(*iter).second)->getPersonalID() == personalID)
+				{
+					std::cout << name << " cancel contract to " << ((Person*)(*iter).second)->getName() << std::endl;
+					listEmployee.erase(iter);
+					return;
+				}
+			}
+		}
+
+		void showEmployeesInfo()
+		{
+			std::cout << std::endl;
+			std::cout << "=================================================" << std::endl;
+			std::cout << " " << name << " " << std::endl;
+			for (std::map<int, Person *>::iterator iter = listEmployee.begin(); iter != listEmployee.end(); iter++)
+			{
+				std::cout << ((Person*)(*iter).second)->getPersonalID() << " " << ((Person*)(*iter).second)->getName() << std::endl;
+			}
+			std::cout << "=================================================" << std::endl;
+			std::cout << std::endl;
+		}
+
+	private:
+
+		std::string					name;
+
+		int							numberOfEmployee;
+		std::map<int, Person*>		listEmployee;
+	};
+
+	University	DuyTan("Duy Tan University");
+	Company		Gameloft("Gameloft company");
+
+	Person *minhvu	= new Person(123, "NCMV");
+	Person *trieu	= new Person(456, "Trieu");
+	Person *vi		= new Person(789, "Hoang Vi");
+
+	DuyTan.hire(minhvu);
+	Gameloft.hire(vi);
+	Gameloft.hire(trieu);
+	DuyTan.hire(trieu);
+
+	DuyTan.showTeachersInfo();
+	Gameloft.showEmployeesInfo();
+
+	Gameloft.cancelContract(trieu->getPersonalID());
+
+	DuyTan.showTeachersInfo();
+	Gameloft.showEmployeesInfo();
+
+	Gameloft.hire(trieu);
+
+	DuyTan.showTeachersInfo();
+	Gameloft.showEmployeesInfo();
+
+	// just release memory
+	delete minhvu;
+	delete trieu;
+	delete vi;
 }
 
 
