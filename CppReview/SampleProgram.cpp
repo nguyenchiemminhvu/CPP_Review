@@ -1,6 +1,7 @@
 #include "SampleProgram.h"
 #include <assert.h>
 #include <iostream>
+#include <string>
 #include <cstring>
 
 using namespace std;
@@ -199,7 +200,73 @@ void SampleProgram::testCompositionRelationship()
 	// - The part(member) does not know about the existence of the object(class)
 	//////////////////////////////////////////////////////////////////////////
 
+	class Point2D
+	{
+	public:
 
+		Point2D() :
+			x(0), y(0)
+		{
+
+		}
+
+		Point2D(int x, int y) :
+			x(x), y(y)
+		{
+
+		}
+
+		void setPoint(int x, int y)
+		{
+			this->x = x;
+			this->y = y;
+		}
+
+		int getPosX()
+		{
+			return this->x;
+		}
+		
+		int getPosY()
+		{
+			return this->y;
+		}
+
+	private:
+
+		int x;
+		int y;
+
+	};
+
+	class GameObject
+	{
+	public:
+
+		GameObject(const std::string &name, const Point2D &pos) :
+			name(name), pos(pos)
+		{
+
+		}
+
+		void moveTo(int x, int y)
+		{
+			std::cout << name << " move from (" << pos.getPosX() << " , " << pos.getPosY() << ") to (" << x << " , " << y << ")" << std::endl;
+			pos.setPoint(x, y);
+		}
+
+	private:
+
+		std::string		name;
+		Point2D			pos;
+
+	};
+
+	GameObject mc("MC", Point2D(5, 5));
+	GameObject enemy("Enemy", Point2D(0, 0));
+
+	mc.moveTo(10, 10);
+	enemy.moveTo(5, 5);
 }
 
 

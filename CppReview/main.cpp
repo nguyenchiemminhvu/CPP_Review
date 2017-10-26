@@ -8,7 +8,7 @@ int main()
 {
 
 	SampleProgram sample;
-	sample.testShadowCopyAndDeepCopy();
+	sample.testCompositionRelationship();
 
 	system("pause");
 	return 0;
