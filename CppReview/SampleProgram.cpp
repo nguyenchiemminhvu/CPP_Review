@@ -236,4 +236,87 @@ void SampleProgram::testVirtualFunctions()
 
 }
 
+
+// dynamic casting
+void SampleProgram::testDynamicCasting()
+{
+
+}
+
+
+// template class
+void SampleProgram::testTemplateClass()
+{
+
+}
+
+
+// template class specialization
+void SampleProgram::testTemplateClassSpecialization()
+{
+
+}
+
+
+// exception
+void SampleProgram::testException()
+{
+
+}
+
+
+// STL container
+void SampleProgram::testStlContainer()
+{
+
+}
+
+
+// STL Iterator
+void SampleProgram::testStlIterator()
+{
+
+}
+
+
+// STL algorithm
+void SampleProgram::testStlAlgorithm()
+{
+
+}
+
+
+// smart pointer basic review
+void SampleProgram::testSmartPointerBasic()
+{
+
+}
+
+// unique pointer (smart pointer review)
+void SampleProgram::testUniquePointer()
+{
+
+}
+
+
+// shared pointer (smart pointer review)
+void SampleProgram::testSharedPointer()
+{
+
+}
+
+
+// Circular dependency issues (smart pointer review)
+void SampleProgram::testCircularDependencyIssues()
+{
+
+}
+
+
+// C++11 standard
+void SampleProgram::testCpp11Features()
+{
+
+}
+
 //====================================================================

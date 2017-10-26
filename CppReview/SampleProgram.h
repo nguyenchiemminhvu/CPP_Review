@@ -39,6 +39,42 @@ public:
 	// virtual functions
 	void testVirtualFunctions();
 
+	// dynamic casting
+	void testDynamicCasting();
+
+	// template class
+	void testTemplateClass();
+
+	// template class specialization
+	void testTemplateClassSpecialization();
+
+	// exception
+	void testException();
+
+	// STL container
+	void testStlContainer();
+
+	// STL Iterator
+	void testStlIterator();
+
+	// STL algorithm
+	void testStlAlgorithm();
+
+	// smart pointer basic review
+	void testSmartPointerBasic();
+
+	// unique pointer (smart pointer review)
+	void testUniquePointer();
+
+	// shared pointer (smart pointer review)
+	void testSharedPointer();
+
+	// Circular dependency issues (smart pointer review)
+	void testCircularDependencyIssues();
+
+	// C++11 standard
+	void testCpp11Features();
+
 	//====================================================================
 };
 
