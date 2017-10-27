@@ -8,7 +8,7 @@ int main()
 {
 
 	SampleProgram sample;
-	sample.testAssociationRelationship();
+	sample.testVirtualFunctions();
 
 	system("pause");
 	return 0;

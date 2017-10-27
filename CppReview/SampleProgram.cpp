@@ -607,21 +607,250 @@ void SampleProgram::testAssociationRelationship()
 // inheritance relationship basic
 void SampleProgram::testInheritanceRelationship()
 {
+	// -------------------------------------------------
+	// inheritance chains
 
+	class A
+	{
+	public:
+
+		A(int a)
+		{
+			std::cout << "A: " << a << std::endl;
+		}
+
+		~A()
+		{
+			std::cout << "~A()" << std::endl;
+		}
+	};
+
+	class B : public A
+	{
+	public:
+
+		B(int a, int b)	:
+			A(a)
+		{
+			std::cout << "B: " << b << std::endl;
+		}
+
+		~B()
+		{
+			std::cout << "~B()" << std::endl;
+		}
+	};
+
+	class C : public B
+	{
+	public:
+
+		C(int a, int b, int c) :
+			B(a, b)
+		{
+			std::cout << "C: " << c << std::endl;
+		}
+
+		~C()
+		{
+			std::cout << "~C()" << std::endl;
+		}
+	};
+
+	// init parent class first
+	C c(1, 2, 3);
 }
 
 
 // multiple inheritance relationship
 void SampleProgram::testMultipleInheritance()
 {
+	class Person
+	{
+	private:
+		std::string m_name;
+		int m_age;
 
+	public:
+		Person(std::string name, int age)
+			: m_name(name), m_age(age)
+		{
+		}
+
+		std::string getName() { return m_name; }
+		int getAge() { return m_age; }
+	};
+
+	class Employee
+	{
+	private:
+		std::string m_employer;
+		double m_wage;
+
+	public:
+		Employee(std::string employer, double wage)
+			: m_employer(employer), m_wage(wage)
+		{
+		}
+
+		std::string getEmployer() { return m_employer; }
+		double getWage() { return m_wage; }
+	};
+
+	// Teacher publicly inherits Person and Employee
+	class Teacher : public Person, public Employee
+	{
+	private:
+		int m_teachesGrade;
+
+	public:
+		Teacher(std::string name, int age, std::string employer, double wage, int teachesGrade)
+			: Person(name, age), Employee(employer, wage), m_teachesGrade(teachesGrade)
+		{
+		}
+	};
 }
 
 
 // virtual functions
 void SampleProgram::testVirtualFunctions()
 {
+	// -----------------------------------------------------------------
+	// pointers and classes
 
+	class Base
+	{
+	protected:
+		int m_value;
+
+	public:
+		Base(int value)
+			: m_value(value)
+		{
+		}
+
+		const char* getName() { return "Base"; }
+		int getValue() { return m_value; }
+	};
+
+	class Derived : public Base
+	{
+	public:
+		Derived(int value)
+			: Base(value)
+		{
+		}
+
+		const char* getName() { return "Derived"; }
+		int getValueDoubled() { return m_value * 2; }
+	};
+
+	Derived derived(5);
+	std::cout << "derived is a " << derived.getName() << " and has value " << derived.getValue() << '\n';
+
+	Derived &rDerived = derived;
+	std::cout << "rDerived is a " << rDerived.getName() << " and has value " << rDerived.getValue() << '\n';
+
+	Derived *pDerived = &derived;
+	std::cout << "pDerived is a " << pDerived->getName() << " and has value " << pDerived->getValue() << '\n';
+
+	// -----------------------------------------------------------------
+	// pointers and classes 2
+
+	class Animal
+	{
+	protected:
+		std::string m_name;
+
+		// We're making this constructor protected because
+		// we don't want people creating Animal objects directly,
+		// but we still want derived classes to be able to use it.
+		Animal(std::string name)
+			: m_name(name)
+		{
+		}
+
+	public:
+		virtual std::string getName() { return m_name; }
+		virtual const char* speak() { return "???"; }
+	};
+
+	class Cat : public Animal
+	{
+	public:
+		Cat(std::string name)
+			: Animal(name)
+		{
+		}
+
+		const char* speak() { return "Meow"; }
+	};
+
+	class Dog : public Animal
+	{
+	public:
+		Dog(std::string name)
+			: Animal(name)
+		{
+		}
+
+		const char* speak() { return "Woof"; }
+	};
+
+	Cat cat("Fred");
+	std::cout << "cat is named " << cat.getName() << ", and it says " << cat.speak() << '\n';
+
+	Dog dog("Garbo");
+	std::cout << "dog is named " << dog.getName() << ", and it says " << dog.speak() << '\n';
+
+	Animal *pAnimal = &cat;
+	std::cout << "pAnimal is named " << pAnimal->getName() << ", and it says " << pAnimal->speak() << '\n';
+
+	pAnimal = &dog;
+	std::cout << "pAnimal is named " << pAnimal->getName() << ", and it says " << pAnimal->speak() << '\n';
+
+	std::vector<Animal *> animals;
+	animals.push_back(new Dog("Fred"));
+	animals.push_back(new Cat("Zack"));
+	animals.push_back(new Dog("Jaycee"));
+	animals.push_back(new Dog("Trundle"));
+	animals.push_back(new Cat("Fortune"));
+
+	for (int i = 0; i < animals.size(); i++)
+	{
+		std::cout << animals[i]->getName() << " says " << animals[i]->speak() << std::endl;
+	}
+
+	// -----------------------------------------------------------------------
+	// virtual functions and polymorphisms
+
+	class A
+	{
+	public:
+		virtual const char* getName() { return "A"; }
+	};
+
+	class B : public A
+	{
+	public:
+		virtual const char* getName() { return "B"; }
+	};
+
+	class C : public B
+	{
+	public:
+		virtual const char* getName() { return "C"; }
+	};
+
+	class D : public C
+	{
+	public:
+		virtual const char* getName() { return "D"; }
+	};
+
+	C c;
+	A &rBase = c;
+	std::cout << "rBase is a " << rBase.getName() << '\n';
 }
 
 
