@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 
 #include <cstring>
 
@@ -195,7 +196,7 @@ void SampleProgram::testShadowCopyAndDeepCopy()
 void SampleProgram::testCompositionRelationship()
 {
 	//////////////////////////////////////////////////////////////////////////
-	// To qualify as a composition, an object and a part must have the following relationship:
+	// To qualify as a composition (strong relationship), an object and a part must have the following relationship:
 	// - The part(member) is part of the object(class)
 	// - The part(member) can only belong to one object(class) at a time
 	// - The part(member) has its existence managed by the object(class)
@@ -276,7 +277,7 @@ void SampleProgram::testCompositionRelationship()
 void SampleProgram::testAggregationRelationship()
 {
 	//////////////////////////////////////////////////////////////////////////
-	// To qualify as an aggregation, a whole object and its parts must have the following relationship:
+	// To qualify as an aggregation (weaker relationship than composition), a whole object and its parts must have the following relationship:
 	// - The part (member) is part of the object (class)
 	// - The part (member) can belong to more than one object (class) at a time
 	// - The part (member) does not have its existence managed by the object (class)
@@ -453,13 +454,118 @@ void SampleProgram::testAggregationRelationship()
 // association relationship
 void SampleProgram::testAssociationRelationship()
 {
+	//////////////////////////////////////////////////////////////////////////
+	// To qualify as an association (weak relationship), an object and another object must have the following relationship:
+	// - The associated object (member) is otherwise unrelated to the object (class)
+	// - The associated object (member) can belong to more than one object (class) at a time
+	// - The associated object (member) does not have its existence managed by the object (class)
+	// - The associated object (member) may or may not know about the existence of the object (class)
+	//////////////////////////////////////////////////////////////////////////
 
+	class Doctor;
+
+	class Patient
+	{
+	public:
+
+		friend class Doctor;
+
+		Patient(const std::string &name) :
+			name(name)
+		{
+
+		}
+
+		std::string getName() const
+		{
+			return name;
+		}
+
+		void showListDoctor()
+		{
+			// pretend to show list of doctors
+		}
+
+	private:
+
+		std::string name;
+		std::vector<Doctor *> listDoctor;
+
+		void addDoctor(Doctor *doc)
+		{
+			listDoctor.push_back(doc);
+		}
+
+	};
+
+	class Doctor
+	{
+	public:
+
+		Doctor(const std::string &name) :
+			name(name)
+		{
+
+		}
+
+		std::string getName() const
+		{
+			return name;
+		}
+
+		void addPatient(Patient *pat)
+		{
+			listPatient.push_back(pat);
+			pat->addDoctor(this);
+		}
+
+		void showListPatient()
+		{
+			// pretend to show list of patients
+		}
+
+	private:
+
+		std::string name;
+		std::vector<Patient *> listPatient;
+
+	};
+
+	Patient *p1 = new Patient("minh vu");
+	Patient *p2 = new Patient("hoang vi");
+	Patient *p3 = new Patient("anh trung");
+
+	Doctor *d1 = new Doctor("mother fucker 1");
+	Doctor *d2 = new Doctor("mother fucker 2");
+
+	d1->addPatient(p1);
+	d2->addPatient(p1);
+	d2->addPatient(p3);
+
+	p1->showListDoctor();
+	p2->showListDoctor();
+	p3->showListDoctor();
+
+	d1->showListPatient();
+	d2->showListPatient();
+
+	// just release memory
+	delete p1;
+	delete p2;
+	delete p3;
+	delete d1;
+	delete d2;
 }
 
 
 // dependencies relationship
 void SampleProgram::testDependenciesRelationship()
 {
+	//////////////////////////////////////////////////////////////////////////
+	// A dependency occurs when one object invokes another object’s functionality in order to accomplish some specific task.
+	// This is a weaker relationship than an association, but still, any change to the dependent object may break functionality in the caller.
+	//////////////////////////////////////////////////////////////////////////
+
 
 }
 
