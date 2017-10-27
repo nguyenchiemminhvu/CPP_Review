@@ -27,9 +27,6 @@ public:
 	// association relationship
 	void testAssociationRelationship();
 
-	// dependencies relationship
-	void testDependenciesRelationship();
-
 	// inheritance relationship basic
 	void testInheritanceRelationship();
 

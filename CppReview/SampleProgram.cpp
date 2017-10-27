@@ -555,20 +555,54 @@ void SampleProgram::testAssociationRelationship()
 	delete p3;
 	delete d1;
 	delete d2;
+
+	// -------------------------------------------------------
+	// another example
+
+	class Course
+	{
+	public:
+
+		Course(const std::string &name, std::vector<Course *> pre = std::vector<Course *>())	:
+			name(name), prerequisites(pre)
+		{
+
+		}
+
+		void addPrerequisite(Course *course)
+		{
+			prerequisites.push_back(course);
+		}
+
+	private:
+
+		std::string name;
+		std::vector<Course *> prerequisites;
+
+	};
+
+	Course *computerScience = new Course("Computer science");
+	
+	Course *cpp = new Course("C++ programming language");
+	cpp->addPrerequisite(computerScience);
+	
+	Course *java = new Course("Java programming language");
+	java->addPrerequisite(computerScience);
+
+	Course *oop = new Course("Object oriented programming");
+	oop->addPrerequisite(computerScience);
+	oop->addPrerequisite(cpp);
+	oop->addPrerequisite(java);
 }
 
-
-// dependencies relationship
-void SampleProgram::testDependenciesRelationship()
-{
-	//////////////////////////////////////////////////////////////////////////
-	// A dependency occurs when one object invokes another object’s functionality in order to accomplish some specific task.
-	// This is a weaker relationship than an association, but still, any change to the dependent object may break functionality in the caller.
-	//////////////////////////////////////////////////////////////////////////
-
-
-}
-
+//////////////////////////////////////////////////////////////////////////
+//Property									Composition			Aggregation			Association
+//Relationship type							Whole / part		Whole / part		Otherwise unrelated
+//Members can belong to multiple classes	No					Yes					Yes
+//Members existence managed by class		Yes					No					No
+//Directionality							Unidirectional		Unidirectional		Unidirectional or bidirectional
+//Relationship verb							Part - of			Has - a				Uses - a
+//////////////////////////////////////////////////////////////////////////
 
 // inheritance relationship basic
 void SampleProgram::testInheritanceRelationship()
