@@ -39,8 +39,14 @@ public:
 	// dynamic casting
 	void testDynamicCasting();
 
+	// template functions
+	void testTemplateFunction();
+
 	// template class
 	void testTemplateClass();
+
+	// template function specialization
+	void testTemplateFunctionSpecialization();
 
 	// template class specialization
 	void testTemplateClassSpecialization();

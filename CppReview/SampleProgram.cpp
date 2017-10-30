@@ -4,7 +4,13 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <queue>
+#include <stack>
+#include <deque>
+#include <list>
+#include <set>
 
+#include <stdio.h>
 #include <cstring>
 
 using namespace std;
@@ -857,49 +863,299 @@ void SampleProgram::testVirtualFunctions()
 // dynamic casting
 void SampleProgram::testDynamicCasting()
 {
+	class Base
+	{
+	protected:
+		int m_value;
 
+	public:
+		Base(int value)
+			: m_value(value)
+		{
+		}
+
+		virtual ~Base() 
+		{
+		}
+	};
+
+	class Derived : public Base
+	{
+	protected:
+		std::string m_name;
+
+	public:
+		Derived(int value, std::string name)
+			: Base(value), m_name(name)
+		{
+		}
+
+		const std::string& getName() 
+		{
+			return m_name; 
+		}
+	};
+
+	Base *b = new Derived(7, "minh vu");
+	std::cout << dynamic_cast<Derived *>(b)->getName() << std::endl;
+
+	Derived d(7, "minh vu 2");
+	Base &b2 = d;
+	std::cout << dynamic_cast<Derived &>(b2).getName() << std::endl;
 }
 
+
+template <typename T>
+T getSum(T a, T b)
+{
+	std::cout << "* ";
+	return a + b;
+}
+
+template <typename T1, typename T2>
+int getSumInt(T1 a, T2 b)
+{
+	std::cout << endl << "+ ";
+	return (int)(a + b);
+}
+
+template <typename T>
+float getAverage(T *arr, int length)
+{
+	T sum = 0;
+
+	for (int i = 0; i < length; i++)
+	{
+		sum += arr[i];
+	}
+
+	return (float)sum / length;
+}
+
+// template functions
+void SampleProgram::testTemplateFunction()
+{
+	std::cout << "getSum(1, 2)		= " << getSum(1, 2) << std::endl;
+	std::cout << "getSum(1.5, 2.2)	= " << getSum(1.5, 2.2) << std::endl;
+	std::cout << "getSumInt(2.2, 4)	= " << getSumInt(2.2, 4) << std::endl;
+
+	std::cout << "getAverage		= " << getAverage(new int[]{1, 5, 2, 7, 4}, 5) << std::endl;
+}
+
+
+template <class T>
+class MyArray
+{
+public:
+
+	MyArray()
+	{
+		length = 0;
+	}
+
+	void addElement(const T &element)
+	{
+		arr.push_back(element);
+		length++;
+	}
+
+	void listElements()
+	{
+		for (int i = 0; i < length; i++)
+		{
+			std::cout << arr[i] << " ";
+		}
+		std::cout << std::endl;
+	}
+
+private:
+
+	std::vector<T> arr;
+	int length;
+
+};
 
 // template class
 void SampleProgram::testTemplateClass()
 {
+	MyArray<int> arr;
+	arr.addElement(1);
+	arr.addElement(2);
+	arr.addElement(3);
+	arr.listElements();
 
+	MyArray<float> arr2;
+	arr2.addElement(2.1);
+	arr2.addElement(1);
+	arr2.addElement(4);
+	arr2.listElements();
 }
 
+
+template<>
+void MyArray<double>::listElements()
+{
+	for (int i = 0; i < length; i++)
+	{
+		printf("%.2f ", arr[i]);
+	}
+	printf("\n");
+}
+
+// template class specialization
+void SampleProgram::testTemplateFunctionSpecialization()
+{
+	MyArray<double> arr;
+	arr.addElement(1);
+	arr.addElement(1);
+	arr.addElement(1);
+	arr.listElements();
+}
+
+
+template <>
+class MyArray<char *>
+{
+public:
+
+	MyArray()
+	{
+		length = 0;
+	}
+
+	void addElement(char *element)
+	{
+		arr.push_back(element);
+		length++;
+	}
+
+	void listElements()
+	{
+		std::cout << "============================================" << std::endl;
+		for (int i = 0; i < length; i++)
+		{
+			std::cout << arr[i] << std::endl;
+		}
+		std::cout << "============================================" << std::endl;
+	}
+
+private:
+
+	std::vector<char *> arr;
+	int length;
+
+};
 
 // template class specialization
 void SampleProgram::testTemplateClassSpecialization()
 {
-
+	MyArray<char *> arr;
+	arr.addElement("minh vu");
+	arr.addElement("minh vu 2");
+	arr.addElement("minh vu 3");
+	arr.listElements();
 }
 
 
 // exception
 void SampleProgram::testException()
 {
-
+	try
+	{
+		throw "what the hell";
+	}
+	catch (int exValue)
+	{
+		std::cout << exValue << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "unknown exception" << std::endl;
+	}
 }
 
 
 // STL container
 void SampleProgram::testStlContainer()
 {
-
+	//////////////////////////////////////////////////////////////////////////
+	// - A set is a container that stores unique elements, with duplicate elements disallowed.The elements are sorted according to their values.
+	//
+	// - A multiset is a set where duplicate elements are allowed.
+	//
+	// - A map(also called an associative array) is a set where each element is a pair, called a key / value pair. 
+	//	 The key is used for sorting and indexing the data, and must be unique.The value is the actual data.
+	//
+	// - A multimap(also called a dictionary) is a map that allows duplicate keys.
+	//   Real - life dictionaries are multi maps : the key is the word, and the value is the meaning of the word.
+	//   All the keys are sorted in ascending order, and you can look up the value by key.Some words can have multiple meanings,
+	//   which is why the dictionary is a multimap rather than a map.
+	//////////////////////////////////////////////////////////////////////////
 }
 
 
 // STL Iterator
 void SampleProgram::testStlIterator()
 {
+	std::map<int, string> mymap;
+	mymap.insert(make_pair(4, "apple"));
+	mymap.insert(make_pair(2, "orange"));
+	mymap.insert(make_pair(1, "banana"));
+	mymap.insert(make_pair(3, "grapes"));
+	mymap.insert(make_pair(6, "mango"));
+	mymap.insert(make_pair(5, "peach"));
 
+	std::map<int, string>::const_iterator it; // declare an iterator
+	it = mymap.begin(); // assign it to the start of the vector
+	while (it != mymap.end()) // while it hasn't reach the end
+	{
+		std::cout << it->first << "=" << it->second << " "; // print the value of the element it points to
+		++it; // and iterate to the next element
+	}
+
+	std::cout << std::endl;
 }
 
 
 // STL algorithm
 void SampleProgram::testStlAlgorithm()
 {
+	std::list<int> li;
+	for (int nCount = 0; nCount < 6; nCount++)
+		li.push_back(nCount);
 
+	std::list<int>::const_iterator it; // declare an iterator
+	it = min_element(li.begin(), li.end());
+	std::cout << *it << " ";
+	it = max_element(li.begin(), li.end());
+	std::cout << *it << " ";
+	std::cout << std::endl;
+
+
+
+	std::vector<int> vect;
+	vect.push_back(7);
+	vect.push_back(-3);
+	vect.push_back(6);
+	vect.push_back(2);
+	vect.push_back(-5);
+	vect.push_back(0);
+	vect.push_back(4);
+
+	std::sort(vect.begin(), vect.end()); // sort the list
+
+	std::vector<int>::const_iterator it2; // declare an iterator
+	for (it2 = vect.begin(); it2 != vect.end(); it2++) // for loop with iterators
+		std::cout << *it2 << " ";
+
+	std::cout << std::endl;
+
+	std::reverse(vect.begin(), vect.end()); // reverse the list
+
+	for (it2 = vect.begin(); it2 != vect.end(); it2++) // for loop with iterators
+		std::cout << *it2 << " ";
+
+	std::cout << std::endl;
 }
 
 

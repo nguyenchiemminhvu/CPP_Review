@@ -8,7 +8,7 @@ int main()
 {
 
 	SampleProgram sample;
-	sample.testVirtualFunctions();
+	sample.testStlAlgorithm();
 
 	system("pause");
 	return 0;
