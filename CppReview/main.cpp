@@ -8,7 +8,7 @@ int main()
 {
 
 	SampleProgram sample;
-	sample.testStlAlgorithm();
+	sample.testCircularDependencyIssues();
 
 	system("pause");
 	return 0;

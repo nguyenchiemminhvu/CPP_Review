@@ -10,6 +10,8 @@
 #include <list>
 #include <set>
 
+#include <memory>
+
 #include <stdio.h>
 #include <cstring>
 
@@ -1162,27 +1164,120 @@ void SampleProgram::testStlAlgorithm()
 // smart pointer basic review
 void SampleProgram::testSmartPointerBasic()
 {
+	std::vector<std::string> v;
+	std::string str = "Knock";
 
+	std::cout << "Copying str\n";
+	v.push_back(str); // calls l-value version of push_back, which makes a copy
+
+	std::cout << "str: " << str << '\n';
+	std::cout << "vector: " << v[0] << '\n';
+
+	std::cout << "\nMoving str\n";
+
+	v.push_back(std::move(str)); // calls r-value version of push_back, which does a move
+
+	std::cout << "str: " << str << '\n';
+	std::cout << "vector:" << v[0] << ' ' << v[1] << '\n';
 }
 
 // unique pointer (smart pointer review)
 void SampleProgram::testUniquePointer()
 {
+	class Resource
+	{
+	public:
 
+		Resource()
+		{
+			std::cout << "Constructor called" << std::endl;
+		}
+
+		virtual ~Resource()
+		{
+			std::cout << "Destructor called" << std::endl;
+		}
+
+		void test()
+		{
+			std::cout << "test" << std::endl;
+		}
+	};
+
+	std::unique_ptr<Resource> res1(new Resource);
+	std::unique_ptr<Resource> res2;
+
+	std::cout << "res1 is " << (static_cast<bool>(res1) ? "not null" : "null") << std::endl;
+	std::cout << "res2 is " << (static_cast<bool>(res2) ? "not null" : "null") << std::endl;
+
+	res2 = std::move(res1);
+
+	std::cout << "res1 is " << (static_cast<bool>(res1) ? "not null" : "null") << std::endl;
+	std::cout << "res2 is " << (static_cast<bool>(res2) ? "not null" : "null") << std::endl;
+
+	res1 = std::make_unique<Resource>();
+
+	std::cout << "res1 is " << (static_cast<bool>(res1) ? "not null" : "null") << std::endl;
+	std::cout << "res2 is " << (static_cast<bool>(res2) ? "not null" : "null") << std::endl;
+
+	std::unique_ptr<Resource[]> res3 = std::make_unique<Resource[]>(5);
+	for (int i = 0; i < 5; i++)
+	{
+		res3[i].test();
+	}
 }
 
 
 // shared pointer (smart pointer review)
 void SampleProgram::testSharedPointer()
 {
+	class Resource
+	{
+	public:
+		Resource() { std::cout << "Resource acquired\n"; }
+		~Resource() { std::cout << "Resource destroyed\n"; }
+	};
 
+	Resource *res = new Resource();
+
+	std::shared_ptr<Resource> res1(res);
+
+	{
+		std::shared_ptr<Resource> res2(res1);
+	}
+
+	std::shared_ptr<Resource> res2(res1);
+
+	std::shared_ptr<Resource> res3 = std::make_shared<Resource>();
 }
 
 
 // Circular dependency issues (smart pointer review)
 void SampleProgram::testCircularDependencyIssues()
 {
+	class Resource
+	{
+	public:
+		std::shared_ptr<Resource> m_ptr; // initially created empty
 
+		Resource() { std::cout << "Resource acquired\n"; }
+		~Resource() { std::cout << "Resource destroyed\n"; }
+	};
+
+	std::shared_ptr<Resource> res1 = std::make_shared<Resource>();
+	res1->m_ptr = res1;
+
+	class Resource2
+	{
+	public:
+		std::weak_ptr<Resource2> m_ptr; // initially created empty
+
+		Resource2() { std::cout << "Resource acquired\n"; }
+		~Resource2() { std::cout << "Resource destroyed\n"; }
+	};
+
+	std::shared_ptr<Resource2> res2 = std::make_shared<Resource2>();
+	res2->m_ptr = res2;
 }
 
 
